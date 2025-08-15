@@ -5,13 +5,11 @@ Windows batch script to **mass-convert PDF (.pdf) to Markdown (.md)** with smart
 * **Textual PDFs →** fast text extraction via **PyMuPDF** (fitz)
 * **Scanned/non-textual PDFs →** robust conversion via **Marker** (`marker-pdf` / `marker_single`), with automatic **page slicing** to avoid OOM/timeouts
 
----
 
 ## Why “smart”?
 
 `smart-pdf-md.bat` inspects each PDF. If enough pages contain real text, it uses PyMuPDF (much faster). Otherwise it falls back to Marker’s high‑quality PDF→Markdown path. Very large PDFs are processed in **slices** (configurable, default 40 pages) to increase reliability.
 
----
 
 ## Features
 
@@ -25,7 +23,6 @@ Windows batch script to **mass-convert PDF (.pdf) to Markdown (.md)** with smart
 
 > **Note:** Image extraction in the Marker path is **disabled by default**; output focuses on Markdown text.
 
----
 
 ## Requirements
 
@@ -36,7 +33,6 @@ Windows batch script to **mass-convert PDF (.pdf) to Markdown (.md)** with smart
 * Internet access on first run (to install `pymupdf` and `marker-pdf` if missing)
 * Optional: **CUDA‑capable GPU** (the script exports `TORCH_DEVICE=cuda` for Marker). If you don’t have a compatible GPU/driver, switch to CPU (see **Configuration**).
 
----
 
 ## Quick Start
 
@@ -148,7 +144,6 @@ Pass `SLICE` on the command line (default 40). On failures, the driver halves th
 
 The Marker path is configured for **Markdown text only** by default. If you want embedded images, call `marker_single` manually with the appropriate flags, or adapt the command in the batch file (search for the lines that build the `marker_single` command in the generated driver).
 
----
 
 ## How it works (under the hood)
 
@@ -165,7 +160,6 @@ The Marker path is configured for **Markdown text only** by default. If you want
      * If it opens, process in **slices** of `SLICE` pages using `marker_single` per slice, shrinking the slice on errors.
 6. **Output**: `.md` written next to the PDF.
 
----
 
 ## Best practices & tips
 
@@ -174,7 +168,6 @@ The Marker path is configured for **Markdown text only** by default. If you want
 * **Speed vs quality**: PyMuPDF is far faster but only extracts text; layout and tables are preserved better by Marker.
 * **Stuck conversions**: lower `SLICE`, lower `DPI`, or switch to CPU if CUDA is unstable.
 
----
 
 ## Troubleshooting
 
@@ -188,7 +181,6 @@ The Marker path is configured for **Markdown text only** by default. If you want
 
 Inside the generated driver, the function `is_textual(pdf, min_chars_per_page=100, min_ratio=0.2)` controls routing. You can raise `min_chars_per_page` or `min_ratio` to send more borderline documents through Marker.
 
----
 
 ## Contributing
 
@@ -199,13 +191,11 @@ PRs for:
 * Robust CPU/GPU auto‑detection for Marker
 * Unit tests and CI
 
----
 
 ## License
 
 Check out `license.md`.
 
----
 
 ## Appendix: Command reference (summary)
 
